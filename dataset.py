@@ -3,34 +3,34 @@ import os
 from torch.utils.data import Dataset
 import numpy as np
 
-class HorseZebraDataset(Dataset):
-    def __init__(self, root_zebra, root_horse, transform=None):
-        self.root_zebra = root_zebra
-        self.root_horse = root_horse
+class PhotoMonetDataset(Dataset):
+    def __init__(self, root_photo, root_monet, transform=None):
+        self.root_photo = root_photo
+        self.root_monet = root_monet
         self.transform = transform
 
-        self.zebra_images = os.listdir(root_zebra)
-        self.horse_images = os.listdir(root_horse)
-        self.length_dataset = max(len(self.zebra_images), len(self.horse_images)) # 1000, 1500
-        self.zebra_len = len(self.zebra_images)
-        self.horse_len = len(self.horse_images)
+        self.photo_images = os.listdir(root_photo)
+        self.monet_images = os.listdir(root_monet)
+        self.length_dataset = max(len(self.photo_images), len(self.monet_images)) # 1000, 1500
+        self.photo_len = len(self.photo_images)
+        self.monet_len = len(self.monet_images)
 
     def __len__(self):
         return self.length_dataset
 
     def __getitem__(self, index):
-        zebra_img = self.zebra_images[index % self.zebra_len]
-        horse_img = self.horse_images[index % self.horse_len]
+        photo_img = self.photo_images[index % self.photo_len]
+        monet_img = self.monet_images[index % self.monet_len]
 
-        zebra_path = os.path.join(self.root_zebra, zebra_img)
-        horse_path = os.path.join(self.root_horse, horse_img)
+        photo_path = os.path.join(self.root_photo, photo_img)
+        monet_path = os.path.join(self.root_monet, monet_img)
 
-        zebra_img = np.array(Image.open(zebra_path).convert("RGB"))
-        horse_img = np.array(Image.open(horse_path).convert("RGB"))
+        photo_img = np.array(Image.open(photo_path).convert("RGB"))
+        monet_img = np.array(Image.open(monet_path).convert("RGB"))
 
         if self.transform:
-            augmentations = self.transform(image=zebra_img, image0=horse_img)
-            zebra_img = augmentations["image"]
-            horse_img = augmentations["image0"]
+            augmentations = self.transform(image=photo_img, image0=monet_img)
+            photo_img = augmentations["image"]
+            monet_img = augmentations["image0"]
 
-        return zebra_img, horse_img
+        return photo_img, monet_img

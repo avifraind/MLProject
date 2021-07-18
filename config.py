@@ -6,12 +6,12 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BASE_DIR = "/home/michaelb/PycharmProjects/MLProject"
 TRAIN_DIR = BASE_DIR+"/data/train"
 VAL_DIR = BASE_DIR+"/data/val"
-BATCH_SIZE = 4
-LEARNING_RATE = 0.0001
+BATCH_SIZE = 1
+LEARNING_RATE = 0.0002
 LAMBDA_IDENTITY = 0.1
-LAMBDA_CYCLE = 7
+LAMBDA_CYCLE = 10
 NUM_WORKERS = 4
-NUM_EPOCHS = 10
+NUM_EPOCHS = 20
 LOAD_MODEL = False
 SAVE_MODEL = True
 CHECKPOINT_GEN_H = "genh.pth.tar"
@@ -45,12 +45,12 @@ transforms_2 = A.Compose(
             A.MotionBlur(p=1),
             A.OpticalDistortion(p=1),
             A.GaussNoise(p=1)
-        ], p=0.2),
+        ], p=0.3),
         A.OneOf([
             A.HorizontalFlip(p=1),
             A.RandomRotate90(p=1),
             A.VerticalFlip(p=1)
-        ], p=0.2),
+        ], p=0.3),
         A.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5], max_pixel_value=255),
         ToTensorV2(),
      ],
